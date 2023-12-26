@@ -1,0 +1,15 @@
+show=drun
+width=750
+#height=400
+lines=10
+always_parse_args=true
+allow_images=true
+filter_rate=100
+show_all=false
+print_command=true
+insensitive=true
+prompt= Hmm, what do you want to run?
+key_expand=Tab
+image_size=16
+insensitive=true
+term=kitty
