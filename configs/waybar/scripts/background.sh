@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 0.5
+
 rofi_cmd() {
 	rofi -dmenu \
 		-p "Wallpaper" \

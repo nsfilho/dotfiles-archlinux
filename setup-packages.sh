@@ -22,21 +22,42 @@ function installYay() {
 
 function installPackagesNative() {
     echo "📦 Installing native packages"
-    sudo pacman -S --needed --noconfirm $packagesNative
+    for package in $packagesNative; do
+        if pacman -Q $package > /dev/null 2>&1; then
+            echo "✅ $package is already installed"
+        else
+            echo "📦 Installing $package"
+            sudo pacman -S --needed --noconfirm $package
+        fi
+    done
 }
 
 function installPackagesForeign() {
     echo "📦 Installing foreign packages"
-    yay -S --needed --noconfirm $packagesForeign
+    for package in $packagesForeign; do
+        if yay -Q $package > /dev/null 2>&1; then
+            echo "✅ $package is already installed"
+        else
+            echo "📦 Installing $package"
+            yay -S --needed --noconfirm $package
+        fi
+    done
 }
 
 function installPackagesFlatpak() {
     echo "📦 Installing flatpak packages"
     for package in $packagesFlatpak; do
-        flatpak install -y $package
+        # check if package is already installed
+        if flatpak list | grep $package > /dev/null 2>&1; then
+            echo "✅ $package is already installed"
+            continue
+        fi
+        echo "📦 Installing $package"
+        sudo flatpak install -y $package
     done
 }
 
+sudo pacman -Syu --noconfirm
 installPackagesNative
 installYay
 installPackagesForeign

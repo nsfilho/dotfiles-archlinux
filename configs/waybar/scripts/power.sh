@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sleep 0.5
+
 # CMDs
 host=$(cat /etc/hostname | cut -d'.' -f1)
 user=$(whoami)
@@ -16,10 +18,16 @@ no=' No'
 
 # Confirmation CMD
 confirm_cmd() {
-	rofi -dmenu \
+	rofi \
+        -theme-str 'window {location: center; anchor: center; fullscreen: false; width: 350px;}' \
+		-theme-str 'mainbox {orientation: vertical; children: [ "message", "listview" ];}' \
+		-theme-str 'listview {columns: 2; lines: 1;}' \
+		-theme-str 'element-text {horizontal-align: 0.5;}' \
+		-theme-str 'textbox {horizontal-align: 0.5;}' \
+        -dmenu \
 		-p 'Confirmation' \
 		-mesg 'Are you Sure?' \
-        -theme $HOME/.config/rofi/style.rasi
+        -theme $HOME/.config/rofi/power.rasi
 }
 
 # Ask for confirmation
@@ -28,9 +36,12 @@ confirm_exit() {
 }
 
 rofi_cmd() {
-	rofi -dmenu \
+	rofi \
+        -theme-str "listview {columns: 1; lines: 6;}" \
+		-theme-str 'textbox-prompt-colon {str: "";}' \
+        -dmenu \
 		-p "💻 $user@$host" \
-        -theme $HOME/.config/rofi/style.rasi
+        -theme $HOME/.config/rofi/power.rasi
 }
 
 run_rofi() {
