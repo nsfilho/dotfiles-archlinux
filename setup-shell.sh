@@ -17,3 +17,4 @@ linkPath "configs/zshrc" ".zshrc"
 
 cargo install bat
 cargo install bottom
+cargo install exa

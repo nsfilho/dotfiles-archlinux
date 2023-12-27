@@ -8,6 +8,7 @@ source $DOTFILES_DIR/setup-shell.sh
 source $DOTFILES_DIR/setup-git.sh
 source $DOTFILES_DIR/setup-neovim.sh
 source $DOTFILES_DIR/setup-hyprland.sh
+source $DOTFILES_DIR/setup-locale.sh
 
 # Enable some services
 sudo systemctl enable --now gdm.service
