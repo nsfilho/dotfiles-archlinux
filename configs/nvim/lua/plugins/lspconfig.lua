@@ -31,6 +31,7 @@ return {
         'williamboman/mason-lspconfig.nvim',
         'stevearc/conform.nvim',
         'mfussenegger/nvim-lint',
+        'simrat39/rust-tools.nvim',
     },
     config = function()
         local lspconfig = require('lspconfig')
@@ -40,25 +41,24 @@ return {
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
         local lspsaga = require('lspsaga')
         local lspkind = require('lspkind')
+        local rt = require('rust-tools')
 
-        local on_attach = function(client, bufnr)
-            local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+        local on_attach = function(_, bufnr)
+            local function buf_set_keymap(...) vim.keymap.set(...) end
             local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-            local opts = { noremap = true, silent = true }
+            local opts = { buffer = bufnr, noremap = true, silent = true }
 
             buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-            buf_set_keymap("n", "<leader>cf", ":Lspsaga finder<CR>", { silent = true })
-            buf_set_keymap("n", "K", ":Lspsaga hover_doc<CR>", { silent = true })
-            buf_set_keymap("n", "<leader>ck", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>',
-                { silent = true })
-            buf_set_keymap("n", "<leader>cj", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>',
-                { silent = true })
-            buf_set_keymap("n", "<leader>cs", ":Lspsaga signature_help<CR>", { silent = true })
-            buf_set_keymap("n", "<leader>ci", ":Lspsaga show_line_diagnostics<CR>", { silent = true })
-            buf_set_keymap("n", "[d", ":Lspsaga diagnostic_jump_prev<CR>", { silent = true })
-            buf_set_keymap("n", "]d", ":Lspsaga diagnostic_jump_next<CR>", { silent = true })
-            buf_set_keymap("n", "<leader>cr", ":Lspsaga rename<CR>", { silent = true })
-            buf_set_keymap("n", "<leader>cd", ":Lspsaga preview_definition<CR>", { silent = true })
+            buf_set_keymap("n", "<leader>cf", ":Lspsaga finder<CR>", opts)
+            buf_set_keymap("n", "K", ":Lspsaga hover_doc<CR>", opts)
+            buf_set_keymap("n", "<leader>ck", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>', opts)
+            buf_set_keymap("n", "<leader>cj", '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>', opts)
+            buf_set_keymap("n", "<leader>cs", ":Lspsaga signature_help<CR>", opts)
+            buf_set_keymap("n", "<leader>ci", ":Lspsaga show_line_diagnostics<CR>", opts)
+            buf_set_keymap("n", "[d", ":Lspsaga diagnostic_jump_prev<CR>", opts)
+            buf_set_keymap("n", "]d", ":Lspsaga diagnostic_jump_next<CR>", opts)
+            buf_set_keymap("n", "<leader>cr", ":Lspsaga rename<CR>", opts)
+            buf_set_keymap("n", "<leader>cd", ":Lspsaga preview_definition<CR>", opts)
             buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
             buf_set_keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
             buf_set_keymap("n", "gI", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
@@ -71,6 +71,8 @@ return {
             buf_set_keymap("n", "<leader>q", ":TroubleToggle<CR>", opts)
             buf_set_keymap("n", "<leader>so", [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<CR>]], opts)
             buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.format { async = false }<CR>", opts)
+            buf_set_keymap("n", "<leader>ah", rt.hover_actions.hover_actions, opts)
+            buf_set_keymap("n", "<leader>ac", rt.code_action_group.code_action_group, opts)
         end
 
         if (jit.arch ~= 'x64') then
@@ -81,7 +83,7 @@ return {
         else
             mason.setup {
                 max_concurrent_installers = 1,
-                ensure_installed = { "lua_ls", "rust_analyzer", "bashls", "tsserver", "html", "yamlls", "taplo" },
+                ensure_installed = { "lua_ls", "rust-analyzer", "eslint_d", "prettierd", "bashls", "tsserver", "html", "yamlls", "taplo" },
             }
         end
 
@@ -90,14 +92,42 @@ return {
         -- setup all lsp servers using mason_lspconfig
         local servers = mason_lspconfig.get_installed_servers()
         for _, server in pairs(servers) do
-            lspconfig[server].setup {
-                on_attach = on_attach,
-                capabilities = capabilities,
-                flags = {
-                    debounce_text_changes = 150,
-                },
+            if server ~= "rust_analyzer" then
+                print("Setting up " .. server, "\n")
+                lspconfig[server].setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    flags = {
+                        debounce_text_changes = 150,
+                    },
+                }
+            end
+        end
+
+        -- check for rust dap adapter
+        local function rustdapFactory()
+            local mason_registry = require('mason-registry')
+            local codelldb = mason_registry.get_package('codelldb')
+            local extension_path = codelldb:get_install_path() .. "/extension/"
+            local codelldb_path = extension_path .. "adapter/codelldb"
+            local liblldb_path = extension_path .. "lldb/lib/liblldb.dylib"
+            return {
+                adapter = require('rust-tools.dap').get_codelldb_adapter(codelldb_path, liblldb_path),
             }
         end
+
+        local rustdap_ok, rustdap = pcall(rustdapFactory)
+        if not rustdap_ok then
+            rustdap = {}
+        end
+
+        rt.setup({
+            dap = rustdap,
+            server = {
+                on_attach = on_attach,
+                capabilities = capabilities,
+            },
+        })
 
         cmp.setup {
             experimental = {

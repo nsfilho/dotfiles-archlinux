@@ -18,11 +18,10 @@ return {
             require("todo-comments").setup {}
         end
     },
-    'lewis6991/gitsigns.nvim',
-    'nvim-lualine/lualine.nvim',
-    'numToStr/Comment.nvim',
-    'haringsrob/nvim_context_vt',
-    'tpope/vim-fugitive',
+    'lewis6991/gitsigns.nvim',       -- git signs in gutter
+    'nvim-lualine/lualine.nvim',     -- statusline
+    'numToStr/Comment.nvim',         -- hotkey for (un)comment lines
+    'andersevenrud/nvim_context_vt', -- comments on close brackets
     {
         'linrongbin16/lsp-progress.nvim',
         dependencies = { 'nvim-tree/nvim-web-devicons' },
