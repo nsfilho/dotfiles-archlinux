@@ -14,4 +14,3 @@ source $DOTFILES_DIR/setup-locale.sh
 sudo systemctl enable --now gdm.service
 sudo systemctl enable --now sshd.service
 sudo systemctl enable --now docker.service
-

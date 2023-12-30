@@ -74,15 +74,6 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     group = fileTypes,
 })
 
--- vim.api.nvim_create_autocmd("FileType", {
---     pattern = {
---         "yaml", "go", "rust", "java", "c", "typescript",
---         "javascript", "typescriptreact", "javascriptreact"
---     },
---     command = "setlocal foldmethod=expr foldexpr=nvim_treesitter#foldexpr() foldlevel=99",
---     group = fileTypes,
--- })
-
 local terminalSplit = vim.api.nvim_create_augroup("terminalSplit", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
     pattern = "*",
@@ -105,7 +96,7 @@ vim.opt.concealcursor = "nc"
 
 -- visual
 vim.opt.termguicolors = true
-vim.opt.cursorline = true
+-- vim.opt.cursorline = true
 vim.opt.pumblend = 0
 vim.opt.winblend = 0
 vim.opt.wildoptions = 'pum'
