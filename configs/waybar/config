@@ -14,12 +14,13 @@
     },
 
     "hyprland/workspaces": {
-        "format": "{icon}",
+        "format": "{name}",
         "on-scroll-up": "hyprctl dispatch workspace e+1",
         "on-scroll-down": "hyprctl dispatch workspace e-1",
         "format-icons": {
-            "active": ""
-        }
+            "active": " "
+        },
+        "sort-by-number": true
     },
 	
 	"pulseaudio": {

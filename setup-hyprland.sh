@@ -8,6 +8,12 @@ linkPath "configs/dunst" ".config/dunst"
 # Configure kitty
 linkPath "configs/kitty" ".config/kitty"
 
+# Configure alacritty
+if [ ! -d "$HOME/.config/alacritty" ]; then
+	mkdir -p $HOME/.config/alacritty
+fi
+linkPath "configs/alacritty.toml" ".config/alacritty/alacritty.toml"
+
 # Configure rofi
 linkPath "configs/rofi" ".config/rofi"
 
@@ -24,18 +30,18 @@ linkPath "configs/wofi" ".config/wofi"
 linkPath "configs/starship.toml" ".config/starship.toml"
 
 # Configure hyprland
-if [ -d $HOME/.config/hypr ] ; then
-    rm -rf $HOME/.config/hypr
+if [ -d $HOME/.config/hypr ]; then
+	rm -rf $HOME/.config/hypr
 fi
 
-if [ ! -L $HOME/.config/hypr ] ; then
-    echo "📦 Creating link $DOTFILES_DIR/configs/hypr -> $HOME/.config/hypr"
-    ln -s $DOTFILES_DIR/configs/hypr $HOME/.config/hypr
+if [ ! -L $HOME/.config/hypr ]; then
+	echo "📦 Creating link $DOTFILES_DIR/configs/hypr -> $HOME/.config/hypr"
+	ln -s $DOTFILES_DIR/configs/hypr $HOME/.config/hypr
 fi
 
-if [ ! -f $HOME/.config/hypr/input.conf ] ; then
-    cp $DOTFILES_DIR/configs/hypr/input.sample.conf $HOME/.config/hypr/input.conf
+if [ ! -f $HOME/.config/hypr/input.conf ]; then
+	cp $DOTFILES_DIR/configs/hypr/input.sample.conf $HOME/.config/hypr/input.conf
 fi
-if [ ! -f $HOME/.config/hypr/monitors.conf ] ; then
-    cp $DOTFILES_DIR/configs/hypr/monitors.sample.conf $HOME/.config/hypr/monitors.conf
+if [ ! -f $HOME/.config/hypr/monitors.conf ]; then
+	cp $DOTFILES_DIR/configs/hypr/monitors.sample.conf $HOME/.config/hypr/monitors.conf
 fi
