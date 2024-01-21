@@ -14,6 +14,8 @@ source $DOTFILES_DIR/setup-hyprland.sh
 source $DOTFILES_DIR/setup-locale.sh
 source $DOTFILES_DIR/setup-fonts.sh
 source $DOTFILES_DIR/setup-apps.sh
+source $DOTFILES_DIR/setup-i3wm.sh
+source $DOTFILES_DIR/setup-dev.sh
 
 # Enable some services
 sudo systemctl enable --now gdm.service
