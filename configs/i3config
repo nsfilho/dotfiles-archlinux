@@ -27,6 +27,9 @@ for_window [title="^Telegram Desktop$"] floating enable
 for_window [title="^Telegram (\([0-9]+\))?$"] floating enable
 for_window [title="^Authy"] floating enable
 for_window [title="^Calculadora"] floating enable
+for_window [title="- KiCad 7.0$"] floating enable
+for_window [title="- Schematic Editor$"] floating enable
+for_window [title="- PCB Editor$"] floating enable
 
 gaps inner 4
 gaps outer 2

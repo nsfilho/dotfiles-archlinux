@@ -46,5 +46,7 @@ alias vtruqa="ssh admin@server-qa.vtru.dev"
 alias proxy1="ssh root@proxy1.jbtec.com.br"
 alias zabbix="ssh root@zabbix.jbtec.com.br"
 
+alias i3config="nvim ~/.config/i3/config"
+
 export PATH="$PATH:$HOME/.dotfiles/scripts:$HOME/.local/bin"
 
