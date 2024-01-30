@@ -33,7 +33,8 @@ alias ls="exa --icons"
 alias vi="nvim"
 alias vim="nvim"
 alias pacman="sudo pacman"
-alias zlocal="cd ~/.dotfiles ; nvim"
+alias zedit="cd ~/.dotfiles ; nvim"
+alias zlocal="nvim ~/.zshrc.local"
 alias ssh="kitty +kitten ssh"
 alias interno="ssh -p 4522 root@minhacasa.e01aio.com.br"
 alias servidor8="ssh root@servidor8.usign.io"
@@ -60,3 +61,7 @@ export PATH="$PATH:$HOME/.dotfiles/scripts:$HOME/.local/bin:$HOME/cargo/bin"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+if [ -f $HOME/.zshrc.local ] ; then
+  source $HOME/.zshrc.local
+fi
