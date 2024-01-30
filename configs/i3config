@@ -27,9 +27,6 @@ for_window [title="^Telegram Desktop$"] floating enable
 for_window [title="^Telegram (\([0-9]+\))?$"] floating enable
 for_window [title="^Authy"] floating enable
 for_window [title="^Calculadora"] floating enable
-for_window [title="- KiCad 7.0$"] floating enable
-for_window [title="- Schematic Editor$"] floating enable
-for_window [title="- PCB Editor$"] floating enable
 
 gaps inner 4
 gaps outer 2
@@ -58,23 +55,16 @@ workspace_auto_back_and_forth no
 exec --no-startup-id ibus-daemon --xim -d -r
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xrdb -merge $HOME/.Xresources
-exec --no-startup-id /usr/libexec/polkit-mate-authentication-agent-1
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-#exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -u $HOME/Imagens/wallpapers -l dimblur
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+exec --no-startup-id /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+exec_always --no-startup-id $HOME/.config/polybar/launcher.sh
+exec_always --no-startup-id nitrogen --restore
 
 # Use pactl to adjust volume in PulseAudio.
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5
 bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s +5%
 bindsym XF86AudioMute exec --no-startup-id pamixer -t
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -201,9 +191,3 @@ bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-exec_always --no-startup-id $HOME/.config/polybar/launcher.sh
-exec_always --no-startup-id nitrogen --restore
-
-#bar {
-#        status_command i3status
-#}

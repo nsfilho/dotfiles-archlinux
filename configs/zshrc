@@ -19,7 +19,11 @@ plugins=(zsh-interactive-cd history-substring-search zsh-autosuggestions zsh-syn
 
 source $ZSH/oh-my-zsh.sh
 source <(/usr/bin/starship init zsh --print-full-init)
-source $HOME/.cargo/env
+
+if [ -f $HOME/cargo.env ] ; then
+  source $HOME/.cargo/env
+fi
+
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 
@@ -47,6 +51,12 @@ alias proxy1="ssh root@proxy1.jbtec.com.br"
 alias zabbix="ssh root@zabbix.jbtec.com.br"
 
 alias i3config="nvim ~/.config/i3/config"
+export PATH="$PATH:$HOME/.dotfiles/scripts:$HOME/.local/bin:$HOME/cargo/bin"
 
-export PATH="$PATH:$HOME/.dotfiles/scripts:$HOME/.local/bin"
 
+# bun completions
+[ -s "/home/nsfilho/.bun/_bun" ] && source "/home/nsfilho/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
