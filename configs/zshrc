@@ -24,6 +24,9 @@ if [ -f $HOME/cargo.env ] ; then
   source $HOME/.cargo/env
 fi
 
+export FZF_ALT_C_COMMAND="fd --type d --strip-cwd-prefix --exclude .git ."
+export FZF_CTRL_T_COMMAND="fd --type f --strip-cwd-prefix --exclude .git ."
+
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 
@@ -47,7 +50,8 @@ alias servidor14="ssh root@servidor14.usign.io"
 alias servidor15="ssh root@servidor15.usign.io"
 alias servidor16="ssh root@servidor16.usign.io"
 alias servidor17="ssh root@servidor17.usign.io"
-alias vtruqa="ssh admin@server-qa.vtru.dev"
+alias vtruqa="ssh root@server-qa.vtru.dev"
+alias vtruproduction="ssh root@studio-server-production.vitruveo.xyz"
 alias proxy1="ssh root@proxy1.jbtec.com.br"
 alias zabbix="ssh root@zabbix.jbtec.com.br"
 
@@ -65,3 +69,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 if [ -f $HOME/.zshrc.local ] ; then
   source $HOME/.zshrc.local
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
