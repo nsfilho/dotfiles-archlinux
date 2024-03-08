@@ -56,7 +56,7 @@ alias proxy1="ssh root@proxy1.jbtec.com.br"
 alias zabbix="ssh root@zabbix.jbtec.com.br"
 
 alias i3config="nvim ~/.config/i3/config"
-export PATH="$PATH:$HOME/.dotfiles/scripts:$HOME/.local/bin:$HOME/cargo/bin"
+export PATH="$PATH:$HOME/.dotfiles/scripts:$HOME/.local/bin:$HOME/.cargo/bin"
 
 
 # bun completions
