@@ -73,3 +73,66 @@ fi
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+
+# Alias do Swarm
+alias dls="docker service ls"
+alias dlogs="docker service logs -f --tail 20"
+alias dupdate="docker service update"
+
+function zupdate {
+    touch /tmp/.zshcustoms_`whoami`
+    bash $HOME/.zshcustoms/install.sh
+}
+
+function ddeploy {
+    if [ ! -f docker-compose.yml ] ; then
+        echo O diretório atual não contém um projeto do swarm.
+        echo Esta faltando o arquivo: docker-compose.yml
+        echo
+        exit 1        
+    fi
+
+    if [ -f prepare.sh ] ; then
+        echo "Executando script de preparação: prepare.sh"
+        bash prepare.sh
+    fi
+
+    PROJETO=${PWD##*/}
+    echo Projeto: $PROJETO
+    docker stack deploy --with-registry-auth -c docker-compose.yml $PROJETO
+    watch -n 1 docker stack ps $PROJETO
+}
+
+function devents {
+    docker events --format '{{json .}}' | jq 'select(.Action | test("(exec_start|exec_create|exec_die)") | not)'
+}
+
+function drm {
+    if [ ! -f docker-compose.yml ] ; then
+        echo O diretório atual não contém um projeto do swarm.
+        echo Esta faltando o arquivo: docker-compose.yml
+        echo
+        exit 1
+    fi
+    PROJETO=${PWD##*/}
+    echo Projeto: $PROJETO
+    docker stack ps $PROJETO
+    watch -n 1 docker stack rm $PROJETO
+}
+
+function typescript-download {
+    GIST="https://gist.githubusercontent.com/nsfilho/aaaa7afeb3169a695efb3231c6d37c82/raw"
+    nomeArquivo=$1
+    if [ ! -f $nomeArquivo ] ; then
+        nomeDownload=$(echo $nomeArquivo | sed "s/\//_/")
+        wget -O $nomeArquivo "$GIST/$nomeDownload"
+    fi
+}
+
+function typescript-prettier-eslint {
+    typescript-download prepare.sh
+    chmod +x prepare.sh
+    ./prepare.sh
+}
